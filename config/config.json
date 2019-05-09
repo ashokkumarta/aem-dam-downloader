@@ -1,0 +1,32 @@
+{
+	"cq_protocal": "http",	
+	"cq_host": "localhost",	
+	"cq_port": "4502",	
+	"cq_user": "admin",	
+	"cq_password": "admin",	
+
+	"base_paths": [
+		"/content/dam/geometrixx/shapes",
+		"/content/dam/geometrixx/movies"
+	],
+	
+	"asset_json_node": "hits",
+	"path_json_node": "jcr:path",
+
+	"extract_properties": [
+		"jcr:path"
+	],
+
+	"successful_assets": "../output/successful_assets.lst",
+	"failed_assets": "../output/failed_assets.lst",
+
+	"path_to_download": "../download",
+
+	"time_wait_secs": 0,
+
+	"trace_log": "../logs/trace.log",
+	"error_log": "../logs/error.log",
+	"status_log": "../logs/status.log"
+}
+
+
