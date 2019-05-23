@@ -3,12 +3,7 @@ Script to download all the assets under the specified path(s) in AEM to a local 
 
 ## Dependencies
 ```
-Python 2.7 - The scripts were developed on Python 2.7
-```
-
-## Tested on
-```
-This script has been tested on 
+Python 3.7
 ```
 
 ## Usage
@@ -50,7 +45,7 @@ Before starting the batch run, ensure
 
 After the above points are checked, run the script scripts/asset-download.py by executing the below command 
 ```
-python asset-download.py 
+python scripts/asset-download.py 
 ```
 
 ###Checking the status of the run
@@ -68,5 +63,5 @@ The following output files can be checked to find the details of the assets down
 > These scripts are created for specific use cases. Make sure its tested for your scenario before applying it for production purpose
 
 ---
-> Environment Tested on:  AEM 6.1 & 6.2 | Windows, RHEL5 | Python2.7.15
+> Environment Tested on:  AEM 6.1, 6.2 & 6.4 | Windows, RHEL5 | Python 3.7.2
 

@@ -1,9 +1,9 @@
-import os, urllib, json, time
+import os, requests, json, time
 from datetime import datetime
 from log_util import * 
 
 def load_config():
-    config_file = '../config/config.json'
+    config_file = 'config/config.json'
     config=open(config_file).read()
     return json.loads(config)
 
@@ -13,7 +13,7 @@ def getTargetPath(asset):
 
 def logStatus(msg):
     s_log.info(msg)
-    print msg
+    print (msg)
 
 def get_timestamp():
     return datetime.now().strftime('%d %b %Y, %H:%M:%S')
@@ -41,14 +41,20 @@ failure = 0
 
 try:
 
+    session = requests.Session()
+    session.auth = (config_json['cq_user'], config_json['cq_password'])
+    session.post(config_json['cq_protocal']+'://'+config_json['cq_host']+':'+config_json['cq_port'])
+
     for dam_path in config_json['base_paths']:
 
         #Form URL to fetch metadata for the given path
-        url = config_json['cq_protocal']+'://'+config_json['cq_user']+':'+config_json['cq_password']+'@'+config_json['cq_host']+':'+config_json['cq_port']+'/bin/querybuilder.json?type=dam:Asset&path='+dam_path+'&p.limit=-1&p.hits=selective&p.properties='+' '.join(config_json['extract_properties'])+'&p.nodedepth=-1'
+        url = config_json['cq_protocal']+'://'+config_json['cq_host']+':'+config_json['cq_port']+'/bin/querybuilder.json?type=dam:Asset&path='+dam_path+'&p.limit=-1&p.hits=selective&p.properties='+' '.join(config_json['extract_properties'])+'&p.nodedepth=-1'
 
         #Fetch metadata
         t_log.info('Fetching metadata of all assets for processing')
-        response = urllib.urlopen(url).read()
+
+        response = session.get(url).content
+        t_log.info(response)
 
         #Parse metadata to identify all assets
         t_log.info('Parsing asset metadata...')
@@ -73,20 +79,20 @@ try:
             url_path = url_path.encode('utf-8')
 
             # Fetch asset
-            result = urllib.urlopen(url_path)
+            result = session.get(url_path)
 
             # Success
-            if 200 == result.getcode():
+            if 200 == result.status_code:
                 try:
                     dir, name = getTargetPath(asset)
                     if not os.path.isdir(dir):
                         os.makedirs(dir)
                     f_out = open(dir+'/'+name, 'wb')
-                    f_out.write(result.read())
+                    f_out.write(result.content)
                     f_out.close()
                     s_handle.info(asset)
                     t_log.info("Downloaded asset : "+asset)
-                except  Exception, e:
+                except  Exception as e:
                     e_log.error('Unexpected error in fetching and storing asset : '+str(asset))
                     e_log.error('Exception : '+str(e))
                     failure += 1
@@ -98,7 +104,7 @@ try:
                 failure += 1
                 f_handle.info(asset)
 
-        except  Exception, e:
+        except  Exception as e:
             e_log.error('Unexpected Error in downloading asset : '+str(asset))
             e_log.error('Exception : '+str(e))
             failure += 1
@@ -107,7 +113,7 @@ try:
         # Wait before the next download
         time.sleep(config_json["time_wait_secs"])
                 
-except  Exception, e:
+except  Exception as e:
     e_log.error('Unexpected Error : '+str(e))
 
 

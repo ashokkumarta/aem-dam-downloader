@@ -6,8 +6,8 @@
 	"cq_password": "admin",	
 
 	"base_paths": [
-		"/content/dam/geometrixx/shapes",
-		"/content/dam/geometrixx/movies"
+		"/content/dam/we-retail/en/activities/hiking",
+		"/content/dam/we-retail/en/activities/running"
 	],
 	
 	"asset_json_node": "hits",
@@ -17,16 +17,16 @@
 		"jcr:path"
 	],
 
-	"successful_assets": "../output/successful_assets.lst",
-	"failed_assets": "../output/failed_assets.lst",
+	"successful_assets": "output/successful_assets.lst",
+	"failed_assets": "output/failed_assets.lst",
 
-	"path_to_download": "../download",
+	"path_to_download": "download",
 
 	"time_wait_secs": 0,
 
-	"trace_log": "../logs/trace.log",
-	"error_log": "../logs/error.log",
-	"status_log": "../logs/status.log"
+	"trace_log": "logs/trace.log",
+	"error_log": "logs/error.log",
+	"status_log": "logs/status.log"
 }
 
 
